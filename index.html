@@ -48,6 +48,30 @@
       </nav>
     </header>
 
+    <!-- Mobile Full-Screen Navigation (hidden by default) -->
+    <div id="mobile-nav">
+      <button class="close-btn" id="mobile-nav-close">&times;</button>
+      <a href="index.html" id="mobile-nav-home">Home</a>
+      <a href="notes.html" id="mobile-nav-notes">Notes</a>
+      <a href="quiz-settings.html" id="mobile-nav-quiz">Quiz</a>
+      <a href="analysis.html" id="mobile-nav-analysis">Analysis</a>
+      <a href="settings.html" id="mobile-nav-settings">Settings</a>
+      <button
+        onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
+        class="btn btn-goofy show-on-login"
+        id="nav-login"
+      >
+        Logout
+      </button>
+      <button
+        onclick="window.location.href = 'settings.html'"
+        class="btn btn-goofy show-on-logout"
+        id="nav-login"
+      >
+        Gemini API Keys
+      </button>
+    </div>
+
     <!-- Main Content -->
     <main id="homepage" data-title="ExamAI - Home">
       <!-- Hero Section -->
@@ -201,7 +225,7 @@
         <div class="cta-content">
           <h2>Ready to Revolutionize Your Study Strategy?</h2>
           <p>
-            Join now! free for students who wants to transformed their learning
+            Join now! Free for students who want to transform their learning
             experience with ExamAI's intelligent study companion.
           </p>
           <button
@@ -252,7 +276,6 @@
       </p>
     </footer>
 
-    <!-- External JS Files -->
     <script src="main.js"></script>
   </body>
 </html>

@@ -45,12 +45,56 @@
       </div>
       <nav id="nav-menu">
         <a href="index.html" id="nav-home">Home</a>
-        <a href="notes.html" id="nav-notes">Notes</a>
-        <a href="quiz-settings.html" id="nav-quiz">Quiz</a>
-        <a href="analysis.html" id="nav-analysis">Analysis</a>
-        <a href="settings.html" id="nav-settings">Settings</a>
+        <a href="notes.html" class="show-on-login" id="nav-notes">Notes</a>
+        <a href="quiz-settings.html" class="show-on-login" id="nav-quiz"
+          >Quiz</a
+        >
+        <a href="analysis.html" class="show-on-login" id="nav-analysis"
+          >Analysis</a
+        >
+        <a href="settings.html" class="show-on-login" id="nav-settings"
+          >Settings</a
+        >
+        <button
+          onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
+          class="btn btn-goofy show-on-login"
+          id="nav-login"
+        >
+          Logout
+        </button>
+        <button
+          onclick="window.location.href = 'settings.html'"
+          class="btn btn-goofy show-on-logout"
+          id="nav-login"
+        >
+          Gemini API Keys
+        </button>
       </nav>
     </header>
+
+    <!-- Mobile Full-Screen Navigation (hidden by default) -->
+    <div id="mobile-nav">
+      <button class="close-btn" id="mobile-nav-close">&times;</button>
+      <a href="index.html" id="mobile-nav-home">Home</a>
+      <a href="notes.html" id="mobile-nav-notes">Notes</a>
+      <a href="quiz-settings.html" id="mobile-nav-quiz">Quiz</a>
+      <a href="analysis.html" id="mobile-nav-analysis">Analysis</a>
+      <a href="settings.html" id="mobile-nav-settings">Settings</a>
+      <button
+        onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
+        class="btn btn-goofy show-on-login"
+        id="nav-login"
+      >
+        Logout
+      </button>
+      <button
+        onclick="window.location.href = 'settings.html'"
+        class="btn btn-goofy show-on-logout"
+        id="nav-login"
+      >
+        Gemini API Keys
+      </button>
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -73,7 +117,7 @@
               <h2>Default Quiz Settings</h2>
               <button
                 type="button"
-                class="btn btn-primary"
+                class="btn btn-secondary"
                 id="accordion-toggle"
               >
                 Expand
@@ -122,12 +166,45 @@
       </div>
     </main>
 
+    <!-- Floating Chatbot -->
+    <div class="chatbot-container">
+      <div class="chatbot-bubble" id="chatbot-toggle">
+        <figure style="width: 32px; margin-top: 5px">
+          <svg
+            style="width: 100%; height: 100%"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3 10.4c0-2.24 0-3.36.436-4.216a4 4 0 0 1 1.748-1.748C6.04 4 7.16 4 9.4 4h5.2c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 7.04 21 8.16 21 10.4v1.2c0 2.24 0 3.36-.436 4.216a4 4 0 0 1-1.748 1.748C17.96 18 16.84 18 14.6 18H7.414a1 1 0 0 0-.707.293l-2 2c-.63.63-1.707.184-1.707-.707zM9 8a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2zm0 4a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2z"
+              fill="#222"
+            />
+          </svg>
+        </figure>
+      </div>
+      <div class="chatbot-window" id="chatbot-window">
+        <h3>Chat with ExamAI</h3>
+        <p>Hi there! How can I help you with your exam preparation today?</p>
+        <input
+          type="text"
+          placeholder="Type your message..."
+          id="chatbot-input"
+        />
+        <button id="chatbot-send">Send</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
     <footer>
       <p>
         &copy; <span id="current-year"></span>
-        <a href="https://drasticcoder.in" target="_blank">DrasticCoder</a>
+        <a href="https://drasticcoder.in" target="_blank">Crazzy Batch</a>
       </p>
     </footer>
+
+    <script src="main.js"></script>
 
     <script>
       document.getElementById('current-year').textContent =
@@ -173,12 +250,6 @@
           alert('Settings saved successfully!');
           window.location.href = 'index.html';
         });
-
-      const hamburger = document.getElementById('hamburger');
-      const navMenu = document.getElementById('nav-menu');
-      hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-      });
 
       // Accordion toggle functionality
       const accordionHeader = document.getElementById('accordion-header');
