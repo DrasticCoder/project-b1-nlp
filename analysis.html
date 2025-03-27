@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ExamAI - Analysis</title>
     <link rel="stylesheet" href="styles.css" />
+    <!-- Mermaid CDN for rendering UML/roadmap diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+      /* Blue and white theme for Analysis page */
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f8ff;
+        color: #333;
+      }
+      .panel {
+        max-width: 900px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .panel h2 {
+        text-align: center;
+        color: #3b82f6;
+      }
+      #analysis-results {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+      #uml-container {
+        margin-top: 2rem;
+      }
+    </style>
   </head>
   <body>
     <!-- Top Navigation Bar -->
@@ -71,12 +102,13 @@
         Gemini API Keys
       </button>
     </div>
-
     <!-- Main Content -->
     <main>
       <div class="panel">
         <h2>Test Analysis</h2>
         <div id="analysis-results"></div>
+        <!-- UML / Roadmap container rendered via Mermaid -->
+        <div id="uml-container"></div>
       </div>
     </main>
 
@@ -106,7 +138,7 @@
           placeholder="Type your message..."
           id="chatbot-input"
         />
-        <button id="chatbot-send">Send</button>
+        <button id="chatbot-send" class="btn btn-primary">Send</button>
       </div>
     </div>
 
@@ -118,19 +150,18 @@
       </p>
     </footer>
 
-    <script src="main.js"></script>
-
     <!-- Loader Overlay -->
     <div id="loading-overlay">
       <div class="spinner"></div>
     </div>
 
+    <script src="main.js"></script>
     <script>
-      // Update current year
+      // Update current year in footer
       document.getElementById('current-year').textContent =
         new Date().getFullYear();
 
-      // Simple Markdown parser (same as used in notes page)
+      // Simple Markdown parser (for basic formatting)
       function parseMarkdown(mdText) {
         let html = mdText;
         html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
@@ -156,10 +187,11 @@
         localStorage.getItem('testHistory') || '[]',
       );
 
-      // Build a prompt for analysis
+      // Build a prompt for analysis:
+      // Instruct the API to generate both a textual analysis and a UML roadmap (using Mermaid syntax)
       let prompt =
-        "Analyse the following test history and provide a prediction on the user's growth percentage, strong and weak points, and suggest resources and key focus areas for improvement:\n";
-      prompt += JSON.stringify(testHistory);
+        "Analyse the following test history and provide a detailed analysis that includes: a prediction on the user's growth percentage, identification of strong and weak points, and suggestions on key focus areas and resources for improvement. Also, provide a roadmap diagram in Mermaid syntax (enclosed in markdown code fences) that visualizes the recommended study plan. Here is the test history data:\n" +
+        JSON.stringify(testHistory);
 
       // Loader functions
       function showLoading() {
@@ -189,10 +221,27 @@
           .then((data) => {
             hideLoading();
             if (data?.candidates?.length > 0) {
-              // Parse the markdown response and render as HTML
               const answer = data.candidates[0]?.content?.parts[0]?.text || '';
+              // Extract Mermaid diagram code (assuming it's in a markdown code fence with "mermaid")
+              const mermaidRegex = /```mermaid\s*([\s\S]*?)\s*```/;
+              const mermaidMatch = answer.match(mermaidRegex);
+              let analysisText = answer;
+              let mermaidDiagram = '';
+              if (mermaidMatch) {
+                mermaidDiagram = mermaidMatch[1].trim();
+                // Remove the code block from analysis text
+                analysisText = answer.replace(mermaidRegex, '').trim();
+              }
+              // Render textual analysis (using our simple markdown parser)
               document.getElementById('analysis-results').innerHTML =
-                parseMarkdown(answer);
+                parseMarkdown(analysisText);
+              // If Mermaid diagram was provided, inject it into the UML container and initialize Mermaid
+              if (mermaidDiagram) {
+                document.getElementById(
+                  'uml-container',
+                ).innerHTML = `<div class="mermaid">${mermaidDiagram}</div>`;
+                mermaid.init(); // re-initialize mermaid to render the diagram
+              }
             } else {
               document.getElementById('analysis-results').innerText =
                 'No analysis available. Please try again.';

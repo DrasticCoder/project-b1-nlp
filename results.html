@@ -5,6 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ExamAI - Results</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f4f4f4;
+      }
+      .panel {
+        max-width: 900px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .panel h2 {
+        text-align: center;
+        color: #3b82f6;
+      }
+      #results-container {
+        margin-top: 1rem;
+      }
+      .result-summary {
+        background: #e0efff;
+        border-left: 5px solid #3b82f6;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+      }
+      .result-item {
+        background: #f9f9f9;
+        border: 1px solid #dce6f2;
+        border-radius: 6px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      .result-item p {
+        margin: 0.5rem 0;
+      }
+    </style>
   </head>
   <body>
     <!-- Top Navigation Bar -->
@@ -12,12 +52,6 @@
       <div class="logo" id="logo">
         <img src="/assets/ask-pce.png" alt="Logo" />
         <span>ExamAI</span>
-      </div>
-      <!-- Hamburger icon for small screens -->
-      <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
       </div>
       <nav id="nav-menu">
         <a href="index.html" id="nav-home">Home</a>
@@ -58,14 +92,14 @@
       <a href="settings.html" id="mobile-nav-settings">Settings</a>
       <button
         onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
-        class="btn btn-goofy show-on-login"
+        class="btn btn-secondary show-on-login"
         id="nav-login"
       >
         Logout
       </button>
       <button
         onclick="window.location.href = 'settings.html'"
-        class="btn btn-goofy show-on-logout"
+        class="btn btn-secondary show-on-logout"
         id="nav-login"
       >
         Gemini API Keys
@@ -77,14 +111,14 @@
       <div class="panel">
         <h2>Results</h2>
         <div id="results-container"></div>
-        <div>
-          <button id="analysis-btn" class="btn btn-secondary">
+        <div style="text-align: center; margin-top: 2rem">
+          <button id="analysis-btn" class="btn btn-primary">
             Analyse Performance
           </button>
+          <button id="results-back-btn" class="btn btn-secondary">
+            Back to Home
+          </button>
         </div>
-        <button id="results-back-btn" class="btn btn-primary">
-          Back to Home
-        </button>
       </div>
     </main>
 
@@ -114,7 +148,7 @@
           placeholder="Type your message..."
           id="chatbot-input"
         />
-        <button id="chatbot-send">Send</button>
+        <button id="chatbot-send" class="btn btn-primary">Send</button>
       </div>
     </div>
 
@@ -127,12 +161,12 @@
     </footer>
 
     <script src="main.js"></script>
-
     <script>
+      // Set current year in footer
       document.getElementById('current-year').textContent =
         new Date().getFullYear();
 
-      // Retrieve quiz results from localStorage
+      // Retrieve quiz results from localStorage and display
       const quizResults = JSON.parse(
         localStorage.getItem('quizResults') || '{}',
       );
@@ -142,11 +176,11 @@
         container.innerHTML = '<p>No results available.</p>';
       } else {
         if (quizResults.type === 'interactive') {
-          container.innerHTML = `<p>${
+          container.innerHTML = `<div class="result-summary"><p>${
             quizResults.feedback || 'Interactive game result.'
-          }</p>`;
+          }</p></div>`;
         } else {
-          let html = `<p><strong>Your Score:</strong> ${quizResults.score} out of ${quizResults.total}</p>`;
+          let html = `<div class="result-summary"><p><strong>Your Score:</strong> ${quizResults.score} out of ${quizResults.total}</p></div>`;
           quizResults.details.forEach((item, index) => {
             const userAnsText =
               item.options &&
@@ -162,7 +196,7 @@
                 : 'Not provided';
             html += `<div class="result-item">
               <p><strong>Question ${index + 1}:</strong> ${item.question}</p>`;
-            if (item.options.length) {
+            if (item.options && item.options.length) {
               html += `<p><strong>Options:</strong> ${item.options.join(
                 ', ',
               )}</p>`;
@@ -176,19 +210,19 @@
         }
       }
 
-      // Save this test result in test history
+      // Save test history in localStorage
       const testHistory = JSON.parse(
         localStorage.getItem('testHistory') || '[]',
       );
       testHistory.push({ date: new Date().toISOString(), result: quizResults });
       localStorage.setItem('testHistory', JSON.stringify(testHistory));
 
-      // Analyse Performance button: ensure redirection works
+      // Redirect to analysis page on click
       document.getElementById('analysis-btn').addEventListener('click', () => {
         window.location.href = 'analysis.html';
       });
 
-      // Back to Home button
+      // Back to home redirection
       document
         .getElementById('results-back-btn')
         .addEventListener('click', () => {
