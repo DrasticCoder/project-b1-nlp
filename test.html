@@ -91,10 +91,72 @@
     </style>
   </head>
   <body>
-    <!-- Header / Navigation -->
+    <!-- Top Navigation Bar -->
     <header>
-      <h1>ExamAI Interactive Quiz Test</h1>
+      <div class="logo" id="logo">
+        <img src="/assets/ask-pce.png" alt="Logo" />
+        <span>ExamAI</span>
+      </div>
+      <!-- Hamburger icon for small screens -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav id="nav-menu">
+        <a href="index.html" id="nav-home">Home</a>
+        <a href="notes.html" class="show-on-login" id="nav-notes">Notes</a>
+        <a href="quiz-settings.html" class="show-on-login" id="nav-quiz"
+          >Quiz</a
+        >
+        <a href="tips.html" class="show-on-login" id="nav-tips">Tips</a>
+        <a href="analysis.html" class="show-on-login" id="nav-analysis"
+          >Analysis</a
+        >
+        <a href="settings.html" class="show-on-login" id="nav-settings"
+          >Settings</a
+        >
+        <button
+          onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
+          class="btn btn-goofy show-on-login"
+          id="nav-login"
+        >
+          Logout
+        </button>
+        <button
+          onclick="window.location.href = 'settings.html'"
+          class="btn btn-goofy show-on-logout"
+          id="nav-login"
+        >
+          Gemini API Keys
+        </button>
+      </nav>
     </header>
+
+    <!-- Mobile Full-Screen Navigation (hidden by default) -->
+    <div id="mobile-nav">
+      <button class="close-btn" id="mobile-nav-close">&times;</button>
+      <a href="index.html" id="mobile-nav-home">Home</a>
+      <a href="notes.html" id="mobile-nav-notes">Notes</a>
+      <a href="quiz-settings.html" id="mobile-nav-quiz">Quiz</a>
+      <a href="tips.html" id="mobile-nav-tips">Tips</a>
+      <a href="analysis.html" id="mobile-nav-analysis">Analysis</a>
+      <a href="settings.html" id="mobile-nav-settings">Settings</a>
+      <button
+        onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
+        class="btn btn-goofy show-on-login"
+        id="nav-login"
+      >
+        Logout
+      </button>
+      <button
+        onclick="window.location.href = 'settings.html'"
+        class="btn btn-goofy show-on-logout"
+        id="nav-login"
+      >
+        Gemini API Keys
+      </button>
+    </div>
 
     <!-- Main Content -->
     <main>
