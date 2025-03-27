@@ -295,6 +295,9 @@ h2 {
 }
 /* === Responsive === */
 @media (max-width: 768px) {
+  body {
+    padding: 0px;
+  }
   .header-buttons button {
     padding: 6px 10px;
     font-size: 0.9rem;
@@ -668,3 +671,13 @@ h2 {
 body.no-scroll {
   overflow: hidden;
 }
+
+/* QUIZ starts */
+#quiz textarea {
+  padding: 10px;
+  border-radius: 10px;
+  min-height: 100px;
+  height: 138px;
+  width: 100%;
+}
+/* QUIZ ends */

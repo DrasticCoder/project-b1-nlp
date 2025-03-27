@@ -73,7 +73,7 @@
     </div>
 
     <!-- Main Content -->
-    <main>
+    <main id="quiz">
       <div class="panel">
         <h2>Quiz</h2>
         <!-- Loader Overlay -->
@@ -198,6 +198,8 @@
         prompt +=
           "Provide only a JSON object with questions. Each question must have properties: 'question', 'options' (an array), 'correctAnswer' (the index of the correct option), and 'explanation'.";
       }
+      prompt +=
+        " Provide only a JSON object with a key 'questions' where its value is an array of question objects. Each question must have the following properties: 'question', 'options' (an array), 'correctAnswer' (an index), and 'explanation'.";
 
       showLoading();
       // Call Gemini API to generate quiz or interactive game
@@ -221,6 +223,8 @@
             hideLoading();
             if (data?.candidates?.length > 0) {
               const answer = data.candidates[0]?.content?.parts[0]?.text || '';
+              console.log('Full API Answer:', answer);
+
               if (currentQuizType === 'interactive') {
                 // For interactive, if answer appears to be valid code, render it directly
                 if (answer && answer.includes('<') && answer.includes('>')) {
@@ -285,6 +289,9 @@
                 }
               } else {
                 try {
+                  const answer =
+                    data.candidates[0]?.content?.parts[0]?.text || '';
+                  console.log('Full API Answer:', answer);
                   const jsonStart = answer.indexOf('{');
                   const jsonEnd = answer.lastIndexOf('}');
                   if (jsonStart === -1 || jsonEnd === -1) {
@@ -294,6 +301,8 @@
                     .substring(jsonStart, jsonEnd + 1)
                     .trim();
                   currentQuiz = JSON.parse(jsonString);
+                  console.log('Parsed Quiz Object:', currentQuiz);
+
                   if (
                     !currentQuiz.questions ||
                     !Array.isArray(currentQuiz.questions)
@@ -308,6 +317,7 @@
                   );
                   renderQuiz();
                 } catch (e) {
+                  console.error('Error during JSON parsing:', e);
                   alert('Error parsing quiz JSON: ' + e.message);
                 }
               }
