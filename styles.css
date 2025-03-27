@@ -1,4 +1,12 @@
 /* === Base Reset & Typography (Light Theme) === */
+
+.show {
+  display: block;
+}
+.hidden {
+  display: none;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -87,6 +95,13 @@ nav a:hover {
 .btn-primary {
   background: #3b82f6;
   color: #ffffff;
+}
+.btn-goofy {
+  background: #f87171;
+  color: #ffffff;
+}
+.btn-goofy:hover {
+  background: #ef4444;
 }
 .btn-primary:hover {
   background: #2563eb;
@@ -330,3 +345,274 @@ h2 {
     flex-wrap: wrap;
   }
 }
+
+/* ======= homepage starts ========= */
+/* Homepage-specific styles scoped under #homepage */
+#homepage {
+  margin-top: 100px;
+}
+
+/* Banner Section */
+#homepage .banner {
+  background: #e0f2fe;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid #3b82f6;
+}
+#homepage .banner h2 {
+  font-size: 2rem;
+  color: #3b82f6;
+  margin-bottom: 10px;
+}
+#homepage .banner p {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+#homepage .banner .btn {
+  margin-top: 10px;
+}
+
+/* Hero Section */
+#homepage .hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 20px;
+  background: #dbeafe;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+#homepage .hero-text {
+  max-width: 50%;
+  width: 100%;
+}
+#homepage .hero-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #3b82f6;
+}
+#homepage .hero-text p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+#homepage .hero-text .cta-buttons button {
+  margin-right: 10px;
+}
+#homepage .hero-image {
+  width: 50%;
+  max-width: 100%;
+}
+#homepage .hero-image img {
+  width: 100%;
+  height: 100%;
+}
+@media (max-width: 768px) {
+  #homepage .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 30px 15px;
+  }
+  #homepage .hero-text {
+    max-width: max-content;
+    margin-bottom: 20px;
+  }
+  #homepage .hero-image {
+    width: 100%;
+  }
+}
+
+/* Features Section */
+#homepage .features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+#homepage .feature-item {
+  background: #ffffff;
+  padding: 20px;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+#homepage .feature-item figure {
+  margin-bottom: 15px;
+  border-radius: 4px;
+  width: 150px;
+  height: 150px;
+  margin: auto;
+}
+#homepage .feature-item img {
+  width: 100%;
+  height: 100%;
+}
+#homepage .feature-item h3 {
+  margin-bottom: 10px;
+  color: #3b82f6;
+}
+#homepage .feature-item p {
+  font-size: 0.95rem;
+}
+
+/* Gemini API Guide Section */
+#homepage .gemini-guide {
+  background: #f3f4f6;
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 15px;
+  margin-bottom: 40px;
+}
+#homepage .guide-steps {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap; /* Allow wrapping for small screens */
+  gap: 20px; /* Add spacing between items */
+}
+#homepage .guide-step {
+  max-width: 250px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex: 1 1 calc(100% - 40px); /* Adjust width for small screens */
+}
+
+@media (max-width: 768px) {
+  #homepage .guide-steps {
+    justify-content: center; /* Center items on smaller screens */
+  }
+  #homepage .guide-step {
+    max-width: 90%; /* Reduce max-width for smaller screens */
+  }
+}
+#homepage .guide-step figure {
+  width: 80px;
+  margin: auto;
+  margin-bottom: 15px;
+}
+#homepage .guide-step h3 {
+  margin-bottom: 10px;
+  color: #3b82f6;
+}
+#homepage .guide-step p {
+  font-size: 0.95rem;
+}
+
+/* CTA Section */
+#homepage .cta-section {
+  background: #dbeafe;
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 15px;
+  margin-bottom: 40px;
+}
+#homepage .cta-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+#homepage .cta-content h2 {
+  font-size: 2.5rem;
+  color: #1e40af;
+  margin-bottom: 20px;
+}
+#homepage .cta-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+/* Floating Chatbot */
+#homepage .chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+#homepage .chatbot-bubble {
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: float 2s ease-in-out infinite;
+}
+#homepage .chatbot-window {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1001;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ======= homepage ends ========= */
+
+/* ======= chatbot starts ======== */
+
+/* Floating Chatbot */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+.chatbot-bubble {
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: float 2s ease-in-out infinite;
+}
+.chatbot-window {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1001;
+}
+
+/* Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+/* ======= chatbot ends ======== */
