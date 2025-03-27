@@ -5,6 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ExamAI - Home</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Override and extend your existing styles for a modern landing page look */
+      main {
+        margin-top: 100px;
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 40px 20px;
+        background: #dbeafe;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        flex-wrap: wrap;
+      }
+      .hero-text {
+        max-width: 50%;
+        width: 100%;
+      }
+      .hero-text h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #3b82f6;
+      }
+      .hero-text p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+      }
+      .hero-text .cta-buttons button {
+        margin-right: 10px;
+      }
+      .hero-image {
+        width: 50%;
+        max-width: 100%;
+      }
+      .hero-image img {
+        width: 100%;
+        height: 100%;
+      }
+      @media (max-width: 768px) {
+        .hero {
+          flex-direction: column;
+          text-align: center;
+        }
+        .hero-text {
+          max-width: 100%;
+        }
+        .hero-image {
+          width: 100%;
+        }
+      }
+      /* Additional modern section */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 40px 0;
+      }
+      .feature-item {
+        background: #ffffff;
+        padding: 20px;
+        border: 1px solid #3b82f6;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .feature-item figure {
+        margin-bottom: 15px;
+        border-radius: 4px;
+        width: 150px;
+        height: 150px;
+        margin: auto;
+      }
+      .feature-item img {
+        width: 100%;
+        height: 100%;
+      }
+      .feature-item h3 {
+        margin-bottom: 10px;
+        color: #3b82f6;
+      }
+      .feature-item p {
+        font-size: 0.95rem;
+      }
+    </style>
   </head>
   <body>
     <!-- Top Navigation Bar -->
@@ -29,30 +114,88 @@
     </header>
 
     <!-- Main Content -->
-    <main>
-      <div class="panel">
-        <h1>Welcome to ExamAI</h1>
-        <p>
-          Prepare for your exams or interviews with our AI-powered quiz and
-          notes generator.
-        </p>
-        <div>
-          <button id="go-to-quiz-btn" class="btn btn-primary">
-            Generate Quiz
-          </button>
-          <button id="go-to-notes-btn" class="btn btn-primary">
-            Generate Notes
-          </button>
-          <button id="go-to-analysis-btn" class="btn btn-secondary">
-            Test Analysis
-          </button>
-          <button id="go-to-settings-btn" class="btn btn-secondary">
-            Settings
-          </button>
+    <main data-title="ExamAI - Home">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-text">
+          <h1>Ace Your Exams with ExamAI</h1>
+          <p>
+            Leverage the power of Gemini API to generate personalized study
+            notes, dynamic quizzes, and in-depth test analysis – all in one
+            intuitive platform.
+          </p>
+          <div class="cta-buttons">
+            <button id="go-to-quiz-btn" class="btn btn-primary">
+              Generate Quiz
+            </button>
+            <button id="go-to-notes-btn" class="btn btn-primary">
+              Generate Notes
+            </button>
+            <button id="go-to-analysis-btn" class="btn btn-secondary">
+              Test Analysis
+            </button>
+            <button id="go-to-settings-btn" class="btn btn-secondary">
+              Settings
+            </button>
+          </div>
         </div>
-      </div>
+        <div class="hero-image">
+          <img src="/assets/images/hero.svg" alt="" />
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features">
+        <div class="feature-item">
+          <figure>
+            <img
+              src="/assets//images/interactive-learning.svg"
+              alt="Interactive Learning"
+            />
+          </figure>
+          <h3>Interactive Learning</h3>
+          <p>
+            Engage with interactive quizzes, dynamic content, and gamified tests
+            designed to boost your learning curve.
+          </p>
+        </div>
+        <div class="feature-item">
+          <figure>
+            <img src="/assets/images/smart-notes.svg" alt="Smart Notes" />
+          </figure>
+          <h3>Smart Notes Generation</h3>
+          <p>
+            Generate comprehensive study notes with ease and turn them into
+            tailored quizzes instantly.
+          </p>
+        </div>
+        <div class="feature-item">
+          <figure>
+            <img src="/assets/images/test-analysis.svg" alt="Test Analysis" />
+          </figure>
+          <h3>In-Depth Analysis</h3>
+          <p>
+            Receive personalized feedback and performance insights to help you
+            improve your study strategy.
+          </p>
+        </div>
+        <div class="feature-item">
+          <figure>
+            <img
+              src="/assets/images/personalized-recommendations.svg"
+              alt="Personalized Recommendations"
+            />
+          </figure>
+          <h3>Personalized Recommendations</h3>
+          <p>
+            Get custom study roadmaps and resource suggestions based on your
+            performance and learning style.
+          </p>
+        </div>
+      </section>
     </main>
 
+    <!-- Footer -->
     <footer>
       <p>
         &copy; <span id="current-year"></span>
