@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Preparation Wizard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Include Mermaid CDN for UML/roadmap rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <!-- Include Marked.js for markdown conversion -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+      /* Blue and white theme with modern styling */
+      form input {
+        width: fit-content;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        color: #333;
+      }
+      .container {
+        max-width: 900px;
+        margin: 2rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1,
+      h2 {
+        text-align: center;
+        color: #3b82f6;
+      }
+      form {
+        margin-top: 1rem;
+      }
+      .wizard-panel {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .wizard-panel.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .question {
+        margin: 1.5rem 0;
+        padding: 0.5rem;
+      }
+      .question p {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+      .options label {
+        display: block;
+        margin-bottom: 0.4rem;
+        cursor: pointer;
+      }
+      .custom-input {
+        margin-top: 1rem;
+      }
+      .custom-input textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .navigation-buttons {
+        text-align: center;
+        margin-top: 2rem;
+      }
+      /* Analysis section */
+      .analysis-section {
+        display: none;
+        margin-top: 2rem;
+        border-top: 1px solid #ccc;
+        padding-top: 2rem;
+      }
+      .analysis-section h2 {
+        margin-bottom: 1rem;
+      }
+      .analysis-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+      .mermaid {
+        margin: 2rem 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <header>
+      <div class="logo" id="logo">
+        <img src="/assets/ask-pce.png" alt="Logo" />
+        <span>ExamAI</span>
+      </div>
+      <nav id="nav-menu">
+        <a href="index.html" id="nav-home">Home</a>
+        <a href="notes.html" class="show-on-login" id="nav-notes">Notes</a>
+        <a href="quiz-settings.html" class="show-on-login" id="nav-quiz"
+          >Quiz</a
+        >
+        <a href="analysis.html" class="show-on-login" id="nav-analysis"
+          >Analysis</a
+        >
+        <a href="settings.html" class="show-on-login" id="nav-settings"
+          >Settings</a
+        >
+        <button
+          onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
+          class="btn btn-goofy show-on-login"
+          id="nav-login"
+        >
+          Logout
+        </button>
+        <button
+          onclick="window.location.href = 'settings.html'"
+          class="btn btn-goofy show-on-logout"
+          id="nav-login"
+        >
+          Gemini API Keys
+        </button>
+      </nav>
+    </header>
+
+    <!-- Mobile Full-Screen Navigation (hidden by default) -->
+    <div id="mobile-nav">
+      <button class="close-btn" id="mobile-nav-close">&times;</button>
+      <a href="index.html" id="mobile-nav-home">Home</a>
+      <a href="notes.html" id="mobile-nav-notes">Notes</a>
+      <a href="quiz-settings.html" id="mobile-nav-quiz">Quiz</a>
+      <a href="analysis.html" id="mobile-nav-analysis">Analysis</a>
+      <a href="settings.html" id="mobile-nav-settings">Settings</a>
+      <button
+        onclick="localStorage.clear(); document.cookie.split(';').forEach(function(c) { document.cookie = c.trim().split('=')[0] + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/'; }); sessionStorage.clear(); window.location.href = 'index.html';"
+        class="btn btn-secondary show-on-login"
+        id="nav-login"
+      >
+        Logout
+      </button>
+      <button
+        onclick="window.location.href = 'settings.html'"
+        class="btn btn-secondary show-on-logout"
+        id="nav-login"
+      >
+        Gemini API Keys
+      </button>
+    </div>
+
+    <div class="container">
+      <h1>Exam Prep Tips</h1>
+      <form id="wizard-form">
+        <!-- Panel 1: Study Habits & Goals (2 questions) -->
+        <div class="wizard-panel active" id="panel-1">
+          <h2>Panel 1: Study Habits & Goals</h2>
+          <div class="question">
+            <p>1. How often do you study?</p>
+            <div class="options">
+              <label
+                ><input
+                  type="radio"
+                  name="studyFrequency"
+                  value="daily"
+                  required
+                />
+                Daily</label
+              >
+              <label
+                ><input type="radio" name="studyFrequency" value="weekly" />
+                Weekly</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="studyFrequency"
+                  value="occasionally"
+                />
+                Occasionally</label
+              >
+              <label
+                ><input type="radio" name="studyFrequency" value="rarely" />
+                Rarely</label
+              >
+            </div>
+          </div>
+          <div class="question">
+            <p>2. What is your primary study goal?</p>
+            <div class="options">
+              <label
+                ><input
+                  type="radio"
+                  name="studyGoal"
+                  value="highScore"
+                  required
+                />
+                High Score (Aim for excellence)</label
+              >
+              <label
+                ><input type="radio" name="studyGoal" value="pass" /> Just
+                Pass</label
+              >
+              <label
+                ><input type="radio" name="studyGoal" value="improve" /> Improve
+                from last time</label
+              >
+              <label
+                ><input type="radio" name="studyGoal" value="explore" /> Explore
+                new topics</label
+              >
+            </div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn" id="next-1">Next</button>
+          </div>
+        </div>
+
+        <!-- Panel 2: Past Performance (2 questions) -->
+        <div class="wizard-panel" id="panel-2">
+          <h2>Panel 2: Past Performance</h2>
+          <div class="question">
+            <p>3. What were your previous scores?</p>
+            <div class="options">
+              <label
+                ><input
+                  type="radio"
+                  name="previousScores"
+                  value="below50"
+                  required
+                />
+                Below 50%</label
+              >
+              <label
+                ><input type="radio" name="previousScores" value="50to70" /> 50%
+                - 70%</label
+              >
+              <label
+                ><input type="radio" name="previousScores" value="above70" />
+                Above 70%</label
+              >
+              <label
+                ><input type="radio" name="previousScores" value="unknown" />
+                Not sure</label
+              >
+            </div>
+          </div>
+          <div class="question">
+            <p>4. How confident are you about your current performance?</p>
+            <div class="options">
+              <label
+                ><input
+                  type="radio"
+                  name="confidence"
+                  value="veryConfident"
+                  required
+                />
+                Very Confident</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="confidence"
+                  value="somewhatConfident"
+                />
+                Somewhat Confident</label
+              >
+              <label
+                ><input type="radio" name="confidence" value="notConfident" />
+                Not Confident</label
+              >
+              <label
+                ><input type="radio" name="confidence" value="unsure" />
+                Unsure</label
+              >
+            </div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn" id="prev-2">Previous</button>
+            <button type="button" class="btn" id="next-2">Next</button>
+          </div>
+        </div>
+
+        <!-- Panel 3: Learning Style & Study Time (2 questions) -->
+        <div class="wizard-panel" id="panel-3">
+          <h2>Panel 3: Learning Style & Study Time</h2>
+          <div class="question">
+            <p>5. What is your preferred mode of study?</p>
+            <div class="options">
+              <label
+                ><input type="radio" name="studyMode" value="audio" required />
+                Audio</label
+              >
+              <label
+                ><input type="radio" name="studyMode" value="visual" />
+                Visual</label
+              >
+              <label
+                ><input type="radio" name="studyMode" value="reading" />
+                Reading</label
+              >
+              <label
+                ><input type="radio" name="studyMode" value="interactive" />
+                Interactive (Group/Online)</label
+              >
+            </div>
+          </div>
+          <div class="question">
+            <p>6. How many hours do you study per day?</p>
+            <div class="options">
+              <label
+                ><input type="radio" name="studyTime" value="less1" required />
+                Less than 1 hour</label
+              >
+              <label
+                ><input type="radio" name="studyTime" value="1to2" /> 1-2
+                hours</label
+              >
+              <label
+                ><input type="radio" name="studyTime" value="2to4" /> 2-4
+                hours</label
+              >
+              <label
+                ><input type="radio" name="studyTime" value="more4" /> More than
+                4 hours</label
+              >
+            </div>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn" id="prev-3">Previous</button>
+            <button type="button" class="btn" id="next-3">Next</button>
+          </div>
+        </div>
+
+        <!-- Panel 4: Custom Input (2 questions) -->
+        <div class="wizard-panel" id="panel-4">
+          <h2>Panel 4: Custom Details</h2>
+          <div class="question">
+            <p>
+              7. Please specify the subject or topic you are focusing on
+              (optional):
+            </p>
+            <input
+              type="text"
+              name="customTopic"
+              placeholder="e.g., Mathematics, Biology"
+              style="
+                width: 100%;
+                padding: 0.5rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="question custom-input">
+            <p>8. Any additional comments or specific exam type? (optional)</p>
+            <textarea
+              name="customComments"
+              placeholder="e.g., Final Exam, Internal Assessment"
+            ></textarea>
+          </div>
+          <div class="navigation-buttons">
+            <button type="button" class="btn" id="prev-4">Previous</button>
+            <button type="submit" class="btn" id="submit-wizard">Submit</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Analysis Section (hidden until form submission) -->
+      <div class="analysis-section" id="analysis-section">
+        <h2>Personalized Exam Preparation Tips</h2>
+        <div class="analysis-text" id="analysis-text"></div>
+        <h3>Your Customized Study Roadmap</h3>
+        <!-- UML Roadmap rendered via Mermaid -->
+        <div id="roadmap" class="mermaid"></div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize Mermaid (manual start)
+      mermaid.initialize({ startOnLoad: false });
+
+      // Wizard Navigation
+      const panels = document.querySelectorAll('.wizard-panel');
+      let currentPanel = 0;
+      function showPanel(index) {
+        panels.forEach((panel, i) => {
+          panel.classList.toggle('active', i === index);
+        });
+      }
+      document.getElementById('next-1').addEventListener('click', () => {
+        currentPanel = 1;
+        showPanel(currentPanel);
+      });
+      document.getElementById('prev-2').addEventListener('click', () => {
+        currentPanel = 0;
+        showPanel(currentPanel);
+      });
+      document.getElementById('next-2').addEventListener('click', () => {
+        currentPanel = 2;
+        showPanel(currentPanel);
+      });
+      document.getElementById('prev-3').addEventListener('click', () => {
+        currentPanel = 1;
+        showPanel(currentPanel);
+      });
+      document.getElementById('next-3').addEventListener('click', () => {
+        currentPanel = 3;
+        showPanel(currentPanel);
+      });
+      document.getElementById('prev-4').addEventListener('click', () => {
+        currentPanel = 2;
+        showPanel(currentPanel);
+      });
+
+      // --- Dummy Gemini API Call Functions ---
+      // Replace these with actual API calls as needed
+
+      // Dummy call for lengthy tips/tricks (simulate 1-2 pages of text)
+      function callGeminiAPIForTips(prompt) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(`
+# Detailed Exam Preparation Guide
+
+**Overview:**  
+Based on your responses, it is clear that a consistent study schedule combined with focused revisions on weaker areas will boost your performance dramatically. In order to achieve a high score, we recommend that you follow the roadmap below, which has been tailored to your current study habits and performance.
+
+**Key Recommendations:**  
+1. **Reinforce Core Concepts:**  
+   Focus on the fundamental topics in your subject. This will build a strong foundation for solving complex problems.
+
+2. **Target Weak Areas:**  
+   Allocate extra study time to areas where your previous scores indicate you might be lagging. Regular practice and revision are key.
+
+3. **Practice Problem Solving:**  
+   Regularly solve mock tests and previous years' question papers. This will not only build speed but also help you identify the type of questions that require more attention.
+
+4. **Diverse Study Methods:**  
+   Based on your preferred study mode, incorporate audio, visual, and reading materials into your schedule. Using interactive sessions for group study can also be beneficial.
+
+5. **Time Management:**  
+   Create a timetable that includes breaks and revision sessions. Consistent short study sessions tend to be more effective than cramming.
+
+6. **Regular Self-assessment:**  
+   Periodically review your progress with practice tests. Adjust your study plan according to your performance.
+
+> **Additional Resources:**  
+> - Online tutorials and video lectures on core topics.  
+> - Interactive quizzes and mock tests available on our platform.  
+> - Study groups and forums for peer discussion.
+
+For a comprehensive study plan, please refer to the customized roadmap provided below.
+            `);
+          }, 1500);
+        });
+      }
+
+      // Dummy call for UML/roadmap diagram using a lower model for validation
+      function callGeminiAPIForUML(prompt) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(`
+\`\`\`mermaid
+graph TD
+    A[Assess Current Level] --> B[Review Core Concepts]
+    B --> C[Identify Weak Areas]
+    C --> D[Allocate Extra Study Time]
+    D --> E[Practice Mock Tests]
+    E --> F[Revise and Consolidate]
+    F --> G[Final Exam Preparation]
+\`\`\`
+            `);
+          }, 1000);
+        });
+      }
+
+      // Form Submission & Analysis
+      document
+        .getElementById('wizard-form')
+        .addEventListener('submit', async (e) => {
+          e.preventDefault();
+          // Collect responses
+          const formData = new FormData(e.target);
+          const responses = {};
+          for (let [key, value] of formData.entries()) {
+            responses[key] = value;
+          }
+          console.log('User Responses:', responses);
+
+          // Build prompts for Gemini API calls
+          const promptForTips =
+            'Based on the following user responses, provide a detailed, 1-2 page exam preparation guide with personalized tips and study recommendations. Include key focus areas and resource suggestions:\n' +
+            JSON.stringify(responses);
+          const promptForUML =
+            'Generate a study roadmap diagram in Mermaid syntax (enclosed in markdown code fences) for the following user responses, indicating days/hours allocated to topics:\n' +
+            JSON.stringify(responses);
+
+          // Call Gemini API for lengthy tips/tricks
+          const tipsResponse = await callGeminiAPIForTips(promptForTips);
+
+          // Call Gemini API for UML diagram (using a lower model)
+          const umlResponse = await callGeminiAPIForUML(promptForUML);
+
+          // Use Marked.js to convert the tips markdown to HTML
+          let analysisHTML = marked.parse(tipsResponse);
+
+          // Extract Mermaid diagram from UML response
+          const mermaidRegex = /```mermaid\s*([\s\S]*?)\s*```/;
+          let mermaidDiagram = '';
+          const mermaidMatch = umlResponse.match(mermaidRegex);
+          if (mermaidMatch) {
+            mermaidDiagram = mermaidMatch[1].trim();
+            // Remove the code block from analysis HTML if present
+            analysisHTML = analysisHTML.replace(mermaidRegex, '');
+          }
+
+          // Inject the analysis text
+          document.getElementById('analysis-text').innerHTML = analysisHTML;
+
+          // Render the Mermaid diagram if available, with error handling
+          if (mermaidDiagram) {
+            try {
+              // Set the diagram inside the roadmap container
+              document.getElementById(
+                'roadmap',
+              ).innerHTML = `<div class="mermaid">${mermaidDiagram}</div>`;
+              // Re-initialize Mermaid to render the diagram
+              mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+            } catch (error) {
+              console.error('Mermaid rendering error:', error);
+              document.getElementById('roadmap').innerHTML =
+                '<p>Error rendering study roadmap diagram. Please check the generated diagram syntax.</p>';
+            }
+          }
+
+          // Hide the wizard form and show the analysis section
+          document.getElementById('wizard-form').style.display = 'none';
+          document.querySelector('.analysis-section').style.display = 'block';
+        });
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>
