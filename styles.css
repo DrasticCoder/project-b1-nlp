@@ -534,38 +534,6 @@ h2 {
   margin-bottom: 30px;
 }
 
-/* Floating Chatbot */
-#homepage .chatbot-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-#homepage .chatbot-bubble {
-  background: #3b82f6;
-  color: white;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: float 2s ease-in-out infinite;
-}
-#homepage .chatbot-window {
-  display: none;
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 300px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  z-index: 1001;
-}
 @keyframes float {
   0%,
   100% {
@@ -578,52 +546,6 @@ h2 {
 
 /* ======= homepage ends ========= */
 
-/* ======= chatbot starts ======== */
-
-/* Floating Chatbot */
-.chatbot-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-.chatbot-bubble {
-  background: #3b82f6;
-  color: white;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: float 2s ease-in-out infinite;
-}
-.chatbot-window {
-  display: none;
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 300px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  z-index: 1001;
-}
-
-/* Animations */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-/* ======= chatbot ends ======== */
 /* -------------------- Mobile Full-Screen Navbar -------------------- */
 /* This section overrides styles only when inside the mobile nav */
 #mobile-nav {

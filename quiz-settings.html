@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ExamAI - Quiz Settings</title>
+    <title>QuizMentor - Quiz Settings</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -11,7 +11,7 @@
     <header>
       <div class="logo" id="logo">
         <img src="/assets/ask-pce.png" alt="Logo" />
-        <span>ExamAI</span>
+        <span>QuizMentor</span>
       </div>
       <!-- Hamburger icon for small screens -->
       <div class="hamburger" id="hamburger">
@@ -101,6 +101,14 @@
             Engineering - DBMS
           </div>
           <div
+            class="trending-panel btn btn-primary"
+            data-subject=""
+            data-topic=""
+            id="from-content-panel"
+          >
+            From Content
+          </div>
+          <div
             class="trending-panel btn btn-secondary"
             data-subject=""
             data-topic=""
@@ -153,33 +161,68 @@
       </div>
     </main>
 
-    <!-- Floating Chatbot -->
-    <div class="chatbot-container">
-      <div class="chatbot-bubble" id="chatbot-toggle">
-        <figure style="width: 32px; margin-top: 5px">
-          <svg
-            style="width: 100%; height: 100%"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+    <!-- Content Input Modal -->
+    <div id="content-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-modal" id="close-content-modal">&times;</span>
+        <h3>Paste Your Content</h3>
+        <p>Paste the content you want to generate quiz questions from:</p>
+        <textarea
+          id="content-input"
+          placeholder="Paste your study material, notes, or any text content here..."
+          rows="15"
+          style="
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            resize: vertical;
+          "
+        ></textarea>
+        <div style="margin-top: 15px">
+          <label for="content-subject">Subject (optional):</label>
+          <input
+            type="text"
+            id="content-subject"
+            placeholder="e.g. Computer Science"
+            style="
+              width: 100%;
+              margin: 5px 0;
+              padding: 8px;
+              border: 1px solid #ddd;
+              border-radius: 3px;
+            "
+          />
+        </div>
+        <div style="margin-top: 10px">
+          <label for="content-topic">Topic (optional):</label>
+          <input
+            type="text"
+            id="content-topic"
+            placeholder="e.g. Data Structures"
+            style="
+              width: 100%;
+              margin: 5px 0;
+              padding: 8px;
+              border: 1px solid #ddd;
+              border-radius: 3px;
+            "
+          />
+        </div>
+        <div style="margin-top: 20px; text-align: right">
+          <button
+            id="cancel-content"
+            class="btn btn-secondary"
+            style="margin-right: 10px"
           >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M3 10.4c0-2.24 0-3.36.436-4.216a4 4 0 0 1 1.748-1.748C6.04 4 7.16 4 9.4 4h5.2c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 7.04 21 8.16 21 10.4v1.2c0 2.24 0 3.36-.436 4.216a4 4 0 0 1-1.748 1.748C17.96 18 16.84 18 14.6 18H7.414a1 1 0 0 0-.707.293l-2 2c-.63.63-1.707.184-1.707-.707zM9 8a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2zm0 4a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2z"
-              fill="#222"
-            />
-          </svg>
-        </figure>
-      </div>
-      <div class="chatbot-window" id="chatbot-window">
-        <h3>Chat with ExamAI</h3>
-        <p>Hi there! How can I help you with your exam preparation today?</p>
-        <input
-          type="text"
-          placeholder="Type your message..."
-          id="chatbot-input"
-        />
-        <button id="chatbot-send">Send</button>
+            Cancel
+          </button>
+          <button id="generate-from-content" class="btn btn-primary">
+            Generate Quiz
+          </button>
+        </div>
       </div>
     </div>
 
@@ -187,7 +230,11 @@
     <footer>
       <p>
         &copy; <span id="current-year"></span>
-        <a href="https://drasticcoder.in" target="_blank">Crazzy Batch</a>
+        <a
+          href="https://github.com/drasticcoder/project-b1-nlp/"
+          target="_blank"
+          >NLP Project-B1</a
+        >
       </p>
     </footer>
 
@@ -196,14 +243,80 @@
       document.getElementById('current-year').textContent =
         new Date().getFullYear();
 
+      // Modal functionality
+      const contentModal = document.getElementById('content-modal');
+      const fromContentPanel = document.getElementById('from-content-panel');
+      const closeContentModal = document.getElementById('close-content-modal');
+      const cancelContent = document.getElementById('cancel-content');
+      const generateFromContent = document.getElementById(
+        'generate-from-content',
+      );
+
+      // Show modal when "From Content" is clicked
+      fromContentPanel.addEventListener('click', () => {
+        contentModal.style.display = 'block';
+      });
+
+      // Close modal functionality
+      function closeModal() {
+        contentModal.style.display = 'none';
+        document.getElementById('content-input').value = '';
+        document.getElementById('content-subject').value = '';
+        document.getElementById('content-topic').value = '';
+      }
+
+      closeContentModal.addEventListener('click', closeModal);
+      cancelContent.addEventListener('click', closeModal);
+
+      // Close modal when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === contentModal) {
+          closeModal();
+        }
+      });
+
+      // Generate quiz from content
+      generateFromContent.addEventListener('click', () => {
+        const content = document.getElementById('content-input').value.trim();
+        if (!content) {
+          alert('Please paste some content to generate quiz from.');
+          return;
+        }
+
+        const subject =
+          document.getElementById('content-subject').value.trim() ||
+          'Custom Content';
+        const topic =
+          document.getElementById('content-topic').value.trim() ||
+          'User Provided Material';
+
+        // Store the content and settings
+        localStorage.setItem('quizContent', content);
+        const quizSettings = {
+          subject: subject,
+          topic: topic,
+          questionType: 'multiple-choice',
+          numQuestions: '7',
+          timeDuration: '9',
+          difficulty: 'medium',
+          fromContent: true,
+        };
+        localStorage.setItem('quizSettings', JSON.stringify(quizSettings));
+        window.location.href = 'quiz.html';
+      });
+
       // Trending panels event handling:
       // Clear any notesContent so that trending topics are not affected by previously generated notes.
       document.querySelectorAll('.trending-panel').forEach((panel) => {
         panel.addEventListener('click', () => {
+          // Skip the from-content panel as it has its own handler
+          if (panel.id === 'from-content-panel') return;
+
           const subject = panel.getAttribute('data-subject') || '';
           const topic = panel.getAttribute('data-topic') || '';
           // Remove stored notesContent to avoid interference
           localStorage.removeItem('notesContent');
+          localStorage.removeItem('quizContent');
           // If not custom, save settings and redirect immediately
           if (subject || topic) {
             const quizSettings = {
@@ -235,6 +348,9 @@
           const numQuestions = document.getElementById('num-questions').value;
           const timeDuration = document.getElementById('time-duration').value;
           const difficulty = document.getElementById('difficulty-select').value;
+
+          // Clear any stored content when using custom form
+          localStorage.removeItem('quizContent');
 
           const quizSettings = {
             subject,

@@ -26,26 +26,6 @@ document?.addEventListener('DOMContentLoaded', function () {
   document.getElementById('learn-more-btn')?.addEventListener('click', () => {
     alert('Visit our guide page for detailed instructions!');
   });
-
-  // Floating Chatbot functionality
-  const chatbotToggle = document.getElementById('chatbot-toggle');
-  const chatbotWindow = document.getElementById('chatbot-window');
-  const chatbotSend = document.getElementById('chatbot-send');
-  const chatbotInput = document.getElementById('chatbot-input');
-
-  chatbotToggle?.addEventListener('click', () => {
-    chatbotWindow.style.display =
-      chatbotWindow.style.display === 'block' ? 'none' : 'block';
-  });
-
-  chatbotSend?.addEventListener('click', () => {
-    const message = chatbotInput.value.trim();
-    if (message) {
-      // Here you could implement sending to an AI agent; for now we show an alert.
-      alert('Message sent: ' + message);
-      chatbotInput.value = '';
-    }
-  });
 });
 
 // Show or hide elements based on login status
@@ -92,46 +72,6 @@ hamburger?.addEventListener('click', () => {
   // For mobile, open the full-screen nav instead
   document.getElementById('mobile-nav').classList.add('active');
   document.body.classList.add('no-scroll');
-});
-// Floating Chatbot functionality
-const chatbotToggle = document.getElementById('chatbot-toggle');
-const chatbotWindow = document.getElementById('chatbot-window');
-const chatbotSend = document.getElementById('chatbot-send');
-const chatbotInput = document.getElementById('chatbot-input');
-
-chatbotToggle?.addEventListener('click', () => {
-  chatbotWindow.style.display =
-    chatbotWindow.style.display === 'block' ? 'none' : 'block';
-});
-
-chatbotSend?.addEventListener('click', () => {
-  const message = chatbotInput.value.trim();
-  if (message) {
-    alert('Message sent: ' + message);
-    chatbotInput.value = '';
-  }
-});
-
-// Close chatbot when clicking outside
-document?.addEventListener('click', (event) => {
-  if (
-    chatbotWindow.style.display === 'block' &&
-    !chatbotWindow.contains(event.target) &&
-    !chatbotToggle.contains(event.target)
-  ) {
-    chatbotWindow.style.display = 'none';
-  }
-});
-
-// Ensure chatbot closes when toggled and user clicks outside
-document?.addEventListener('click', (event) => {
-  if (
-    chatbotWindow.style.display === 'block' &&
-    !chatbotWindow.contains(event.target) &&
-    !chatbotToggle.contains(event.target)
-  ) {
-    chatbotWindow.style.display = 'none';
-  }
 });
 
 // Mobile Navigation: close button handler

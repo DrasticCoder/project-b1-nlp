@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ExamAI - Generate Notes</title>
+    <title>QuizMentor - Generate Notes</title>
     <link rel="stylesheet" href="styles.css" />
     <style>
       /* Additional custom styles for the Notes page */
@@ -28,7 +28,7 @@
     <header>
       <div class="logo" id="logo">
         <img src="/assets/ask-pce.png" alt="Logo" />
-        <span>ExamAI</span>
+        <span>QuizMentor</span>
       </div>
       <!-- Hamburger icon for small screens -->
       <div class="hamburger" id="hamburger">
@@ -145,41 +145,15 @@
       </div>
     </main>
 
-    <!-- Floating Chatbot -->
-    <div class="chatbot-container">
-      <div class="chatbot-bubble" id="chatbot-toggle">
-        <figure style="width: 32px; margin-top: 5px">
-          <svg
-            style="width: 100%; height: 100%"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M3 10.4c0-2.24 0-3.36.436-4.216a4 4 0 0 1 1.748-1.748C6.04 4 7.16 4 9.4 4h5.2c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 7.04 21 8.16 21 10.4v1.2c0 2.24 0 3.36-.436 4.216a4 4 0 0 1-1.748 1.748C17.96 18 16.84 18 14.6 18H7.414a1 1 0 0 0-.707.293l-2 2c-.63.63-1.707.184-1.707-.707zM9 8a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2zm0 4a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2z"
-              fill="#222"
-            />
-          </svg>
-        </figure>
-      </div>
-      <div class="chatbot-window" id="chatbot-window">
-        <h3>Chat with ExamAI</h3>
-        <p>Hi there! How can I help you with your exam preparation today?</p>
-        <input
-          type="text"
-          placeholder="Type your message..."
-          id="chatbot-input"
-        />
-        <button id="chatbot-send">Send</button>
-      </div>
-    </div>
-
     <!-- Footer -->
     <footer>
       <p>
         &copy; <span id="current-year"></span>
-        <a href="https://drasticcoder.in" target="_blank">Crazzy Batch</a>
+        <a
+          href="https://github.com/drasticcoder/project-b1-nlp/"
+          target="_blank"
+          >NLP Project-B1</a
+        >
       </p>
     </footer>
 
@@ -196,7 +170,7 @@
           let notesContent =
             document.getElementById('notes-container').innerHTML;
           // let footerText =
-          //   '\n\nThis document is generated through ExamAI tool by DrasticCoder';
+          //   '\n\nThis document is generated through QuizMentor tool by DrasticCoder';
 
           let formattedContent = notesContent
             .replace(/<br\s*\/?>/g, '\n')
@@ -210,7 +184,7 @@
           // });
           const topic = document.getElementById('notes-topic').value.trim();
 
-          doc.save(`${topic} ExamAI_Notes.pdf`);
+          doc.save(`${topic} QuizMentor_Notes.pdf`);
         });
 
       // Show the download button only when notes are generated
